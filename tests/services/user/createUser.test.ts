@@ -4,7 +4,7 @@ import { IUser, IUserAdd } from "../../../src/types/user/user.type";
 
 const fakeInput: IUserAdd = {
   name: "valid_name",
-  email: "valid_email",
+  email: "valid_email@email.com",
   birthdate: new Date("2004-01-21"),
   job_position: "valid_job_position",
   phone: "valid_phone",
@@ -14,7 +14,7 @@ const fakeOutput: IUser[] = [
   {
     id: "valid_id",
     name: "valid_name",
-    email: "valid_email",
+    email: "valid_email@email.com",
     birthdate: new Date("2004-01-21"),
     job_position: "valid_job_position",
     phone: "valid_phone",
@@ -41,9 +41,12 @@ describe("Unit tests for CreateUser resource", () => {
 
     jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(false);
 
+    jest.spyOn(sut, "IsEmailValid").mockResolvedValueOnce(true);
+
     await sut.CreateUser(fakeInput);
 
     expect(sut.IsBirthdateValid).toHaveBeenCalledWith(fakeInput.birthdate);
+    expect(sut.IsEmailValid).toHaveBeenCalledWith(fakeInput.email);
     expect(sut.UserAlreadyExists).toHaveBeenCalledWith(fakeInput.email);
   });
 
@@ -75,6 +78,46 @@ describe("Unit tests for CreateUser resource", () => {
     await expect(sutReturn).resolves.not.toThrowError("Invalid birthdate");
   });
 
+  it("Should return an error message if email is invalid", async () => {
+    const { sut } = makeSut();
+
+    const fakeInvalidEmail = "invalid_email";
+
+    const sutReturn = sut.CreateUser({ ...fakeInput, email: fakeInvalidEmail });
+
+    await expect(sutReturn).resolves.toThrowError("Invalid email address");
+  });
+
+  it("Should not return an error message if email is valid", async () => {
+    const { sut } = makeSut();
+
+    const fakeValidEmail = "valid_email@gmail.com";
+
+    const sutReturn = sut.CreateUser({ ...fakeInput, email: fakeValidEmail });
+
+    await expect(sutReturn).resolves.not.toThrowError("Invalid email address");
+  });
+
+  it("Should return false if email is invalid", async () => {
+    const { sut } = makeSut();
+
+    const fakeInvalidEmail = "invalid_email";
+
+    const isEmailValidReturn = sut.IsEmailValid(fakeInvalidEmail);
+
+    expect(isEmailValidReturn).toBeFalsy();
+  });
+
+  it("Should return true if email is invalid", async () => {
+    const { sut } = makeSut();
+
+    const fakeValidEmail = "valid_email@gmail.com";
+
+    const isEmailValidReturn = sut.IsEmailValid(fakeValidEmail);
+
+    expect(isEmailValidReturn).toBeTruthy();
+  });
+
   it("Should return an error message if user already exists", async () => {
     const { sut } = makeSut();
 
@@ -102,7 +145,9 @@ describe("Unit tests for CreateUser resource", () => {
       .spyOn(userRepositoryImplementationStub, "findUserByEmail")
       .mockResolvedValueOnce(fakeOutput[0]);
 
-    const userAlreadyExistsReturn = await sut.UserAlreadyExists("valid_email");
+    const userAlreadyExistsReturn = await sut.UserAlreadyExists(
+      "valid_email@email.com"
+    );
 
     expect(userAlreadyExistsReturn).toBeTruthy();
   });
@@ -115,13 +160,13 @@ describe("Unit tests for CreateUser resource", () => {
       .mockResolvedValueOnce(undefined);
 
     const userAlreadyExistsReturn = await sut.UserAlreadyExists(
-      "another_valid_email"
+      "another_valid_email@email.com"
     );
 
     expect(userAlreadyExistsReturn).toBeFalsy();
   });
 
-  it("Should create user and return it", async () => {
+  it("Should successfully create user and return it with the expected fields", async () => {
     const { sut } = makeSut();
 
     const sutReturn = await sut.CreateUser(fakeInput);
