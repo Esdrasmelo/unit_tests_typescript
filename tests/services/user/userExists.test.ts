@@ -35,7 +35,7 @@ describe("User Exists method", () => {
       "valid_email@email.com"
     );
 
-    expect(userAlreadyExistsReturn).toBeTruthy();
+    expect(userAlreadyExistsReturn).toBe(true);
   });
 
   it("Should return false if user does not exist", async () => {
@@ -49,6 +49,6 @@ describe("User Exists method", () => {
       "another_valid_email@email.com"
     );
 
-    expect(userAlreadyExistsReturn).toBeFalsy();
+    expect(userAlreadyExistsReturn).toBe(false);
   });
 });

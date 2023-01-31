@@ -128,4 +128,16 @@ describe("Unit tests for Get All Users resource", () => {
 
     expect(sutReturn.status).toBe(200);
   });
+
+  it("Should throw error if userRepositoryImplementationStub throws", async () => {
+    const { sut, userRepositoryImplementationStub } = makeSut();
+
+    jest
+      .spyOn(userRepositoryImplementationStub, "findAllUsers")
+      .mockRejectedValueOnce(new Error(""));
+
+    const sutReturn = sut.GetAllUsers();
+
+    await expect(sutReturn).rejects.toThrow();
+  });
 });

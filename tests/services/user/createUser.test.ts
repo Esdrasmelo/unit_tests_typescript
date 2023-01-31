@@ -229,4 +229,16 @@ describe("Unit tests for CreateUser resource", () => {
 
     expect(sutReturn.status).toBe(201);
   });
+
+  it("Should throw error if userRepositoryImplementationStub throws", async () => {
+    const { sut, userRepositoryImplementationStub } = makeSut();
+
+    jest
+      .spyOn(userRepositoryImplementationStub, "createUser")
+      .mockRejectedValueOnce(new Error(""));
+
+    const sutReturn = sut.CreateUser(fakeInput);
+
+    await expect(sutReturn).rejects.toThrow();
+  });
 });
