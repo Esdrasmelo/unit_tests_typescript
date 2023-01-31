@@ -23,13 +23,25 @@ export class UserService {
     return false;
   }
 
+  public IsEmailValid(email: string): boolean {
+    const regex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    return regex.test(email);
+  }
+
   public async CreateUser(input_data: IUserAdd): Promise<IUser> {
     try {
       const validateBirthdate = this.IsBirthdateValid(input_data.birthdate);
       const userAlreadyExists = await this.UserAlreadyExists(input_data.email);
+      const isEmailValid = this.IsEmailValid(input_data.email);
 
       if (!validateBirthdate) {
         throw new Error("Invalid birthdate");
+      }
+
+      if (!isEmailValid) {
+        throw new Error("Invalid email address");
       }
 
       if (userAlreadyExists) {
