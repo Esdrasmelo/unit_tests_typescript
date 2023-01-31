@@ -1,4 +1,8 @@
-import { IUser, IUserAdd, IUserRepositoryPort } from "../types";
+import {
+  badRequestResponse,
+  createdResponse,
+} from "../protocols/http.protocols";
+import { HttpResponse, IUser, IUserAdd, IUserRepositoryPort } from "../types";
 
 export class UserService {
   private userRepositoryPort: IUserRepositoryPort;
@@ -30,27 +34,29 @@ export class UserService {
     return regex.test(email);
   }
 
-  public async CreateUser(input_data: IUserAdd): Promise<IUser> {
+  public async CreateUser(
+    input_data: IUserAdd
+  ): Promise<HttpResponse<IUser | string>> {
     try {
       const validateBirthdate = this.IsBirthdateValid(input_data.birthdate);
       const userAlreadyExists = await this.UserAlreadyExists(input_data.email);
       const isEmailValid = this.IsEmailValid(input_data.email);
 
       if (!validateBirthdate) {
-        throw new Error("Invalid birthdate");
+        return badRequestResponse<string>("Invalid birthdate");
       }
 
       if (!isEmailValid) {
-        throw new Error("Invalid email address");
+        return badRequestResponse<string>("Invalid email address");
       }
 
       if (userAlreadyExists) {
-        throw new Error("User already exists");
+        return badRequestResponse<string>("User already exists");
       }
 
       const createdUser = await this.userRepositoryPort.createUser(input_data);
 
-      return createdUser;
+      return createdResponse<IUser>(createdUser);
     } catch (error) {
       return error;
     }
