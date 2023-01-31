@@ -1,6 +1,8 @@
 import {
   badRequestResponse,
   createdResponse,
+  notFoundResponse,
+  okResponse,
 } from "../protocols/http.protocols";
 import { HttpResponse, IUser, IUserAdd, IUserRepositoryPort } from "../types";
 
@@ -58,7 +60,21 @@ export class UserService {
 
       return createdResponse<IUser>(createdUser);
     } catch (error) {
-      return error;
+      throw new Error(error);
+    }
+  }
+
+  public async GetAllUsers(): Promise<HttpResponse<IUser[] | string>> {
+    try {
+      const getUsers = await this.userRepositoryPort.findAllUsers();
+
+      if (!getUsers.length) {
+        return notFoundResponse<string>("Users not found");
+      }
+
+      return okResponse<IUser[]>(getUsers);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }
