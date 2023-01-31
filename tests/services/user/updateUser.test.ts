@@ -33,7 +33,7 @@ const makeSut = () => {
   };
 };
 
-describe("Update User resource", () => {
+describe("Unit tests for UpdateUser service", () => {
   it("Should call findUserById function with correct values", async () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 

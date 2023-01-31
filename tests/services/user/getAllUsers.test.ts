@@ -35,7 +35,7 @@ const makeSut = () => {
   };
 };
 
-describe("Unit tests for Get All Users resource", () => {
+describe("Unit tests for GetAllUsers service", () => {
   it("Should call findAllUsers 1 time", async () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 

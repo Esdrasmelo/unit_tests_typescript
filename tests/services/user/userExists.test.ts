@@ -23,7 +23,7 @@ const makeSut = () => {
   };
 };
 
-describe("User Exists method", () => {
+describe("Unit tests for UserExists method", () => {
   it("Should return true if user already exists", async () => {
     const { sut, userRepositoryStub } = makeSut();
 

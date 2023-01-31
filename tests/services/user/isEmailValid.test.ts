@@ -10,7 +10,7 @@ const makeSut = () => {
   };
 };
 
-describe("Is Email Valid method", () => {
+describe("Unit tests for IsEmailValid method", () => {
   it("Should return false if email is not valid", async () => {
     const { sut } = makeSut();
 

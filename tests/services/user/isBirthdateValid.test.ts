@@ -10,7 +10,7 @@ const makeSut = () => {
   };
 };
 
-describe("Is Birthdate Valid method", () => {
+describe("Unit tests for IsBirthdateValid method", () => {
   it("Should return true if birthdate is valid", async () => {
     const { sut } = makeSut();
 

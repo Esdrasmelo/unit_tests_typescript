@@ -20,7 +20,7 @@ const makeSut = () => {
   };
 };
 
-describe("Unit tests for CreateUser resource", () => {
+describe("Unit tests for CreateUser service", () => {
   it("Should call internal functions with correct values", async () => {
     const { sut } = makeSut();
 
