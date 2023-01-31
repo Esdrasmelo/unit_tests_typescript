@@ -14,5 +14,6 @@
   "dependencies": {},
   "scripts": {
     "test": "jest"
-  }
+  },
+  "license": "MIT"
 }
