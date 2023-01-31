@@ -46,20 +46,22 @@ export class UserService {
     inputData: IUserAdd
   ): Promise<HttpResponse<IUser | string>> {
     try {
-      const validateBirthdate = this.IsBirthdateValid(inputData.birthdate);
       const userAlreadyExists = await this.UserExists(inputData.email);
-      const isEmailValid = this.IsEmailValid(inputData.email);
+
+      if (userAlreadyExists) {
+        return badRequestResponse<string>("User already exists");
+      }
+
+      const validateBirthdate = this.IsBirthdateValid(inputData.birthdate);
 
       if (!validateBirthdate) {
         return badRequestResponse<string>("Invalid birthdate");
       }
 
+      const isEmailValid = this.IsEmailValid(inputData.email);
+
       if (!isEmailValid) {
         return badRequestResponse<string>("Invalid email address");
-      }
-
-      if (userAlreadyExists) {
-        return badRequestResponse<string>("User already exists");
       }
 
       const createdUser = await this.userRepositoryPort.createUser(inputData);
