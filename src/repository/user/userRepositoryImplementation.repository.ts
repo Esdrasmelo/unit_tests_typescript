@@ -22,17 +22,27 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
     }
   }
 
-  async createUser(input_data: IUserAdd): Promise<IUser> {
+  async findUserById(userId: string): Promise<IUser | undefined> {
+    try {
+      const user = this.userDatabase.find((user) => user.id === userId);
+
+      return user;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async createUser(inputData: IUserAdd): Promise<IUser> {
     try {
       this.userDatabase.push({
-        ...input_data,
+        ...inputData,
         id: randomUUID(),
         created_at: new Date(),
         updated_at: new Date(),
       });
 
       const user = this.userDatabase.find(
-        (user) => user.email === input_data.email
+        (user) => user.email === inputData.email
       );
 
       return user!;
@@ -40,14 +50,15 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
       return error;
     }
   }
-  async updateUser(id: string, input_data: IUserUpdate): Promise<IUser> {
+
+  async updateUser(userId: string, inputData: IUserUpdate): Promise<IUser> {
     try {
       const userIndex = this.userDatabase.indexOf(
-        this.userDatabase.find((user) => user.id === id)!
+        this.userDatabase.find((user) => user.id === userId)!
       );
 
       this.userDatabase[userIndex] = {
-        ...input_data,
+        ...inputData,
         ...this.userDatabase[userIndex],
       };
 
