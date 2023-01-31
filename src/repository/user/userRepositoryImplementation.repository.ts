@@ -34,16 +34,16 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
 
   async createUser(inputData: IUserAdd): Promise<IUser> {
     try {
+      const generatedId = randomUUID();
+
       this.userDatabase.push({
         ...inputData,
-        id: randomUUID(),
+        id: generatedId,
         created_at: new Date(),
         updated_at: new Date(),
       });
 
-      const user = this.userDatabase.find(
-        (user) => user.email === inputData.email
-      );
+      const user = this.userDatabase.find((user) => user.id === generatedId);
 
       return user!;
     } catch (error) {
