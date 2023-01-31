@@ -39,7 +39,7 @@ describe("Unit tests for CreateUser resource", () => {
 
     jest.spyOn(sut, "IsBirthdateValid").mockReturnValueOnce(true);
 
-    jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(false);
+    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(false);
 
     jest.spyOn(sut, "IsEmailValid").mockReturnValueOnce(true);
 
@@ -47,7 +47,7 @@ describe("Unit tests for CreateUser resource", () => {
 
     expect(sut.IsBirthdateValid).toHaveBeenCalledWith(fakeInput.birthdate);
     expect(sut.IsEmailValid).toHaveBeenCalledWith(fakeInput.email);
-    expect(sut.UserAlreadyExists).toHaveBeenCalledWith(fakeInput.email);
+    expect(sut.UserExists).toHaveBeenCalledWith(fakeInput.email);
   });
 
   it("Should return an error message if birthdate is not valid", async () => {
@@ -181,7 +181,7 @@ describe("Unit tests for CreateUser resource", () => {
   it("Should return an error message if user already exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(true);
+    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(true);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
@@ -191,7 +191,7 @@ describe("Unit tests for CreateUser resource", () => {
   it("Should return status 400 if user already exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(true);
+    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(true);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
@@ -201,7 +201,7 @@ describe("Unit tests for CreateUser resource", () => {
   it("Should not return an error message if user does not exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(false);
+    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(false);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
@@ -211,7 +211,7 @@ describe("Unit tests for CreateUser resource", () => {
   it("Should not return status 400 if user does not exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(false);
+    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(false);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
@@ -225,7 +225,7 @@ describe("Unit tests for CreateUser resource", () => {
       .spyOn(userRepositoryImplementationStub, "findUserByEmail")
       .mockResolvedValueOnce(fakeOutput[0]);
 
-    const userAlreadyExistsReturn = await sut.UserAlreadyExists(
+    const userAlreadyExistsReturn = await sut.UserExists(
       "valid_email@email.com"
     );
 
@@ -239,7 +239,7 @@ describe("Unit tests for CreateUser resource", () => {
       .spyOn(userRepositoryImplementationStub, "findUserByEmail")
       .mockResolvedValueOnce(undefined);
 
-    const userAlreadyExistsReturn = await sut.UserAlreadyExists(
+    const userAlreadyExistsReturn = await sut.UserExists(
       "another_valid_email@email.com"
     );
 

@@ -21,7 +21,7 @@ export class UserService {
     return false;
   }
 
-  public async UserAlreadyExists(email: string): Promise<boolean> {
+  public async UserExists(email: string): Promise<boolean> {
     const user = await this.userRepositoryPort.findUserByEmail(email);
 
     if (user) return true;
@@ -41,7 +41,7 @@ export class UserService {
   ): Promise<HttpResponse<IUser | string>> {
     try {
       const validateBirthdate = this.IsBirthdateValid(input_data.birthdate);
-      const userAlreadyExists = await this.UserAlreadyExists(input_data.email);
+      const userAlreadyExists = await this.UserExists(input_data.email);
       const isEmailValid = this.IsEmailValid(input_data.email);
 
       if (!validateBirthdate) {
