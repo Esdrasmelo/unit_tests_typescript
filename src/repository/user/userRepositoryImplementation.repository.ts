@@ -8,7 +8,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
     try {
       return this.userDatabase;
     } catch (error) {
-      return error;
+      throw new Error(error);
     }
   }
 
@@ -18,7 +18,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
 
       return user;
     } catch (error) {
-      return error;
+      throw new Error(error);
     }
   }
 
@@ -28,7 +28,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
 
       return user;
     } catch (error) {
-      return error;
+      throw new Error(error);
     }
   }
 
@@ -47,7 +47,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
 
       return user!;
     } catch (error) {
-      return error;
+      throw new Error(error);
     }
   }
 
@@ -64,17 +64,21 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
 
       return this.userDatabase[userIndex];
     } catch (error) {
-      return error;
+      throw new Error(error);
     }
   }
 
   async deleteUser(id: string): Promise<IUser> {
-    const user = this.userDatabase.find((user) => user.id === id)!;
+    try {
+      const user = this.userDatabase.find((user) => user.id === id)!;
 
-    const userIndex = this.userDatabase.indexOf(user);
+      const userIndex = this.userDatabase.indexOf(user);
 
-    this.userDatabase.splice(userIndex, 1);
+      this.userDatabase.splice(userIndex, 1);
 
-    return user;
+      return user;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
