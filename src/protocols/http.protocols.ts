@@ -8,15 +8,22 @@ export const okResponse = <DataType>(
 });
 
 export const badRequestResponse = <DataType>(
-  data: DataType
+  errorMessage: DataType
 ): HttpResponse<DataType> => ({
-  body: data,
+  body: errorMessage,
   status: 400,
 });
 
 export const notFoundResponse = <DataType>(
+  errorMessage: DataType
+): HttpResponse<DataType> => ({
+  body: errorMessage,
+  status: 404,
+});
+
+export const createdResponse = <DataType>(
   data: DataType
 ): HttpResponse<DataType> => ({
   body: data,
-  status: 404,
+  status: 201,
 });
