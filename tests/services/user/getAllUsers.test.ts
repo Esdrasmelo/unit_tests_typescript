@@ -36,7 +36,7 @@ const makeSut = () => {
 };
 
 describe("Unit tests for Get All Users resource", () => {
-  it("Should call userRepositoryImplementation with correct values", async () => {
+  it("Should call findAllUsers 1 time", async () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     const userRepositoryImplementationSpy = jest.spyOn(
@@ -47,5 +47,85 @@ describe("Unit tests for Get All Users resource", () => {
     await sut.GetAllUsers();
 
     expect(userRepositoryImplementationSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("Should not call user findAllUsers function with any arguments", async () => {
+    const { sut, userRepositoryImplementationStub } = makeSut();
+
+    const userRepositoryImplementationSpy = jest.spyOn(
+      userRepositoryImplementationStub,
+      "createUser"
+    );
+
+    await sut.GetAllUsers();
+
+    expect(userRepositoryImplementationSpy).not.toHaveBeenCalledWith();
+  });
+
+  it("Should return an error message if no users were found", async () => {
+    const { sut, userRepositoryImplementationStub } = makeSut();
+
+    jest
+      .spyOn(userRepositoryImplementationStub, "findAllUsers")
+      .mockResolvedValueOnce([]);
+
+    const sutReturn = await sut.GetAllUsers();
+
+    expect(sutReturn.body).toBe("Users not found");
+  });
+
+  it("Should return status 404 if no users were found", async () => {
+    const { sut, userRepositoryImplementationStub } = makeSut();
+
+    jest
+      .spyOn(userRepositoryImplementationStub, "findAllUsers")
+      .mockResolvedValueOnce([]);
+
+    const sutReturn = await sut.GetAllUsers();
+
+    expect(sutReturn.status).toBe(404);
+  });
+
+  it("Should return data with correct structure", async () => {
+    const { sut, userRepositoryImplementationStub } = makeSut();
+
+    jest
+      .spyOn(userRepositoryImplementationStub, "findAllUsers")
+      .mockResolvedValueOnce(fakeOutput);
+
+    const sutReturn = await sut.GetAllUsers();
+
+    expect(sutReturn.body[0]).toMatchObject<IUser>({
+      id: expect.any(String),
+      birthdate: expect.any(Date),
+      name: expect.any(String),
+      email: expect.any(String),
+      job_position: expect.any(String),
+      phone: expect.any(String),
+      created_at: expect.any(Date),
+      updated_at: expect.any(Date),
+    });
+    expect(sutReturn.body[1]).toMatchObject<IUser>({
+      id: expect.any(String),
+      birthdate: expect.any(Date),
+      name: expect.any(String),
+      email: expect.any(String),
+      job_position: expect.any(String),
+      phone: expect.any(String),
+      created_at: expect.any(Date),
+      updated_at: expect.any(Date),
+    });
+  });
+
+  it("Should return status 200 if users are found", async () => {
+    const { sut, userRepositoryImplementationStub } = makeSut();
+
+    jest
+      .spyOn(userRepositoryImplementationStub, "findAllUsers")
+      .mockResolvedValueOnce(fakeOutput);
+
+    const sutReturn = await sut.GetAllUsers();
+
+    expect(sutReturn.status).toBe(200);
   });
 });
