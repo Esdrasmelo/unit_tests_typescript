@@ -6,7 +6,7 @@ const makeSut = () => {
   const sut = new UserService(userRepositoryStub);
 
   return {
-    sut
+    sut,
   };
 };
 
@@ -24,7 +24,7 @@ describe("Is Email Valid method", () => {
   it("Should return true if email is valid", async () => {
     const { sut } = makeSut();
 
-    const fakeValidEmail = 'valid_email@email.com';
+    const fakeValidEmail = "valid_email@email.com";
 
     const sutReturn = sut.IsEmailValid(fakeValidEmail);
 
