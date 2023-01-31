@@ -1,4 +1,4 @@
-import { UserService } from "../../../src/services/user.service";
+import { UserService } from "../../../src/services";
 import { UserRepositoryImplementation } from "../../../src/repository";
 import { IUser, IUserAdd } from "../../../src/types/user/user.type";
 
@@ -35,13 +35,13 @@ const makeSut = () => {
 
 describe("Unit tests for CreateUser resource", () => {
   it("Should call internal functions with correct values", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+    const { sut } = makeSut();
 
     jest.spyOn(sut, "IsBirthdateValid").mockReturnValueOnce(true);
 
     jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(false);
 
-    jest.spyOn(sut, "IsEmailValid").mockResolvedValueOnce(true);
+    jest.spyOn(sut, "IsEmailValid").mockReturnValueOnce(true);
 
     await sut.CreateUser(fakeInput);
 
@@ -56,12 +56,26 @@ describe("Unit tests for CreateUser resource", () => {
     const fakeInvalidBirthdate = new Date();
     fakeInvalidBirthdate.setDate(fakeInvalidBirthdate.getDate() + 10);
 
-    const sutReturn = sut.CreateUser({
+    const sutReturn = await sut.CreateUser({
       ...fakeInput,
       birthdate: fakeInvalidBirthdate,
     });
 
-    await expect(sutReturn).resolves.toThrowError("Invalid birthdate");
+    expect(sutReturn.body).toBe("Invalid birthdate");
+  });
+
+  it("Should return status 400 if birthdate is not valid", async () => {
+    const { sut } = makeSut();
+
+    const fakeInvalidBirthdate = new Date();
+    fakeInvalidBirthdate.setDate(fakeInvalidBirthdate.getDate() + 10);
+
+    const sutReturn = await sut.CreateUser({
+      ...fakeInput,
+      birthdate: fakeInvalidBirthdate,
+    });
+
+    expect(sutReturn.status).toBe(400);
   });
 
   it("Should not return an error message if birthdate is valid", async () => {
@@ -70,12 +84,26 @@ describe("Unit tests for CreateUser resource", () => {
     const fakeValidBirthdate = new Date();
     fakeValidBirthdate.setDate(fakeValidBirthdate.getDate() - 10);
 
-    const sutReturn = sut.CreateUser({
+    const sutReturn = await sut.CreateUser({
       ...fakeInput,
       birthdate: fakeValidBirthdate,
     });
 
-    await expect(sutReturn).resolves.not.toThrowError("Invalid birthdate");
+    expect(sutReturn.body).not.toBe("Invalid birthdate");
+  });
+
+  it("Should not return status 400 if birthdate is valid", async () => {
+    const { sut } = makeSut();
+
+    const fakeValidBirthdate = new Date();
+    fakeValidBirthdate.setDate(fakeValidBirthdate.getDate() - 10);
+
+    const sutReturn = await sut.CreateUser({
+      ...fakeInput,
+      birthdate: fakeValidBirthdate,
+    });
+
+    expect(sutReturn.status).not.toBe(400);
   });
 
   it("Should return an error message if email is invalid", async () => {
@@ -83,9 +111,25 @@ describe("Unit tests for CreateUser resource", () => {
 
     const fakeInvalidEmail = "invalid_email";
 
-    const sutReturn = sut.CreateUser({ ...fakeInput, email: fakeInvalidEmail });
+    const sutReturn = await sut.CreateUser({
+      ...fakeInput,
+      email: fakeInvalidEmail,
+    });
 
-    await expect(sutReturn).resolves.toThrowError("Invalid email address");
+    expect(sutReturn.body).toBe("Invalid email address");
+  });
+
+  it("Should return status 400 if email is invalid", async () => {
+    const { sut } = makeSut();
+
+    const fakeInvalidEmail = "invalid_email";
+
+    const sutReturn = await sut.CreateUser({
+      ...fakeInput,
+      email: fakeInvalidEmail,
+    });
+
+    expect(sutReturn.status).toBe(400);
   });
 
   it("Should not return an error message if email is valid", async () => {
@@ -93,9 +137,25 @@ describe("Unit tests for CreateUser resource", () => {
 
     const fakeValidEmail = "valid_email@gmail.com";
 
-    const sutReturn = sut.CreateUser({ ...fakeInput, email: fakeValidEmail });
+    const sutReturn = await sut.CreateUser({
+      ...fakeInput,
+      email: fakeValidEmail,
+    });
 
-    await expect(sutReturn).resolves.not.toThrowError("Invalid email address");
+    expect(sutReturn.body).not.toBe("Invalid email address");
+  });
+
+  it("Should not return status 400 if email is valid", async () => {
+    const { sut } = makeSut();
+
+    const fakeValidEmail = "valid_email@gmail.com";
+
+    const sutReturn = await sut.CreateUser({
+      ...fakeInput,
+      email: fakeValidEmail,
+    });
+
+    expect(sutReturn.status).not.toBe(400);
   });
 
   it("Should return false if email is invalid", async () => {
@@ -123,9 +183,19 @@ describe("Unit tests for CreateUser resource", () => {
 
     jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(true);
 
-    const sutReturn = sut.CreateUser(fakeInput);
+    const sutReturn = await sut.CreateUser(fakeInput);
 
-    await expect(sutReturn).resolves.toThrowError("User already exists");
+    expect(sutReturn.body).toBe("User already exists");
+  });
+
+  it("Should return status 400 if user already exists", async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(true);
+
+    const sutReturn = await sut.CreateUser(fakeInput);
+
+    expect(sutReturn.status).toBe(400);
   });
 
   it("Should not return an error message if user does not exists", async () => {
@@ -133,9 +203,19 @@ describe("Unit tests for CreateUser resource", () => {
 
     jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(false);
 
-    const sutReturn = sut.CreateUser(fakeInput);
+    const sutReturn = await sut.CreateUser(fakeInput);
 
-    await expect(sutReturn).resolves.not.toThrowError("User already exists");
+    expect(sutReturn.body).not.toBe("User already exists");
+  });
+
+  it("Should not return status 400 if user does not exists", async () => {
+    const { sut } = makeSut();
+
+    jest.spyOn(sut, "UserAlreadyExists").mockResolvedValueOnce(false);
+
+    const sutReturn = await sut.CreateUser(fakeInput);
+
+    expect(sutReturn.status).not.toBe(400);
   });
 
   it("Should return true if user already exists", async () => {
@@ -171,7 +251,7 @@ describe("Unit tests for CreateUser resource", () => {
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
-    expect(sutReturn).toMatchObject<IUser>({
+    expect(sutReturn.body).toMatchObject<IUser>({
       id: expect.any(String),
       birthdate: expect.any(Date),
       name: expect.any(String),
@@ -181,5 +261,13 @@ describe("Unit tests for CreateUser resource", () => {
       created_at: expect.any(Date),
       updated_at: expect.any(Date),
     });
+  });
+
+  it("Should return status 201 if user is successfully created", async () => {
+    const { sut } = makeSut();
+
+    const sutReturn = await sut.CreateUser(fakeInput);
+
+    expect(sutReturn.status).toBe(201);
   });
 });
