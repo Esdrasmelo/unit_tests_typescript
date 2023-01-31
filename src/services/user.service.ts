@@ -4,7 +4,13 @@ import {
   notFoundResponse,
   okResponse,
 } from "../protocols/http.protocols";
-import { HttpResponse, IUser, IUserAdd, IUserRepositoryPort } from "../types";
+import {
+  HttpResponse,
+  IUser,
+  IUserAdd,
+  IUserRepositoryPort,
+  IUserUpdate,
+} from "../types";
 
 export class UserService {
   private userRepositoryPort: IUserRepositoryPort;
@@ -37,12 +43,12 @@ export class UserService {
   }
 
   public async CreateUser(
-    input_data: IUserAdd
+    inputData: IUserAdd
   ): Promise<HttpResponse<IUser | string>> {
     try {
-      const validateBirthdate = this.IsBirthdateValid(input_data.birthdate);
-      const userAlreadyExists = await this.UserExists(input_data.email);
-      const isEmailValid = this.IsEmailValid(input_data.email);
+      const validateBirthdate = this.IsBirthdateValid(inputData.birthdate);
+      const userAlreadyExists = await this.UserExists(inputData.email);
+      const isEmailValid = this.IsEmailValid(inputData.email);
 
       if (!validateBirthdate) {
         return badRequestResponse<string>("Invalid birthdate");
@@ -56,7 +62,7 @@ export class UserService {
         return badRequestResponse<string>("User already exists");
       }
 
-      const createdUser = await this.userRepositoryPort.createUser(input_data);
+      const createdUser = await this.userRepositoryPort.createUser(inputData);
 
       return createdResponse<IUser>(createdUser);
     } catch (error) {
@@ -73,6 +79,42 @@ export class UserService {
       }
 
       return okResponse<IUser[]>(getUsers);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  public async UpdateUser(
+    userId: string,
+    inputData: IUserUpdate
+  ): Promise<HttpResponse<IUser | string>> {
+    try {
+      const userExists = await this.userRepositoryPort.findUserById(userId);
+
+      if (!userExists) {
+        return notFoundResponse<string>("User does not exist");
+      }
+
+      const isEmailValid =
+        !!inputData.email && this.IsEmailValid(inputData.email);
+
+      if (!isEmailValid) {
+        return badRequestResponse<string>("Invalid email address");
+      }
+
+      const isBirthdateValid =
+        !!inputData.birthdate && this.IsBirthdateValid(inputData.birthdate);
+
+      if (!isBirthdateValid) {
+        return badRequestResponse<string>("Invalid birthdate");
+      }
+
+      const updatedUser = await this.userRepositoryPort.updateUser(
+        userId,
+        inputData
+      );
+
+      return okResponse<IUser>(updatedUser);
     } catch (error) {
       throw new Error(error);
     }
