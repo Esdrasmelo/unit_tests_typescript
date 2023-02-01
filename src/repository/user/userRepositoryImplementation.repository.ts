@@ -4,7 +4,7 @@ import { IUser, IUserAdd, IUserRepositoryPort, IUserUpdate } from "../../types";
 export class UserRepositoryImplementation implements IUserRepositoryPort {
   private userDatabase: IUser[] = [];
 
-  async findAllUsers(): Promise<IUser[]> {
+  async FindAll(): Promise<IUser[]> {
     try {
       return this.userDatabase;
     } catch (error) {
@@ -12,7 +12,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
     }
   }
 
-  async findUserByEmail(email: string): Promise<IUser | undefined> {
+  async FindByEmail(email: string): Promise<IUser | undefined> {
     try {
       const user = this.userDatabase.find((user) => user.email === email);
 
@@ -22,7 +22,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
     }
   }
 
-  async findUserById(userId: string): Promise<IUser | undefined> {
+  async FindById(userId: string): Promise<IUser | undefined> {
     try {
       const user = this.userDatabase.find((user) => user.id === userId);
 
@@ -32,7 +32,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
     }
   }
 
-  async createUser(inputData: IUserAdd): Promise<IUser> {
+  async Create(inputData: IUserAdd): Promise<IUser> {
     try {
       const generatedId = randomUUID();
 
@@ -51,7 +51,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
     }
   }
 
-  async updateUser(userId: string, inputData: IUserUpdate): Promise<IUser> {
+  async Update(userId: string, inputData: IUserUpdate): Promise<IUser> {
     try {
       const userIndex = this.userDatabase.indexOf(
         this.userDatabase.find((user) => user.id === userId)!
@@ -68,7 +68,7 @@ export class UserRepositoryImplementation implements IUserRepositoryPort {
     }
   }
 
-  async deleteUser(id: string): Promise<IUser> {
+  async Delete(id: string): Promise<IUser> {
     try {
       const user = this.userDatabase.find((user) => user.id === id)!;
 

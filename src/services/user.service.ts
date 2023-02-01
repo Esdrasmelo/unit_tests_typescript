@@ -28,7 +28,7 @@ export class UserService {
   }
 
   public async UserExists(email: string): Promise<boolean> {
-    const user = await this.userRepositoryPort.findUserByEmail(email);
+    const user = await this.userRepositoryPort.FindByEmail(email);
 
     if (user) return true;
 
@@ -64,7 +64,7 @@ export class UserService {
         return badRequestResponse<string>("Invalid email address");
       }
 
-      const createdUser = await this.userRepositoryPort.createUser(inputData);
+      const createdUser = await this.userRepositoryPort.Create(inputData);
 
       return createdResponse<IUser>(createdUser);
     } catch (error) {
@@ -74,7 +74,7 @@ export class UserService {
 
   public async GetAllUsers(): Promise<HttpResponse<IUser[] | string>> {
     try {
-      const getUsers = await this.userRepositoryPort.findAllUsers();
+      const getUsers = await this.userRepositoryPort.FindAll();
 
       if (!getUsers.length) {
         return notFoundResponse<string>("Users not found");
@@ -91,7 +91,7 @@ export class UserService {
     inputData: IUserUpdate
   ): Promise<HttpResponse<IUser | string>> {
     try {
-      const userExists = await this.userRepositoryPort.findUserById(userId);
+      const userExists = await this.userRepositoryPort.FindById(userId);
 
       if (!userExists) {
         return notFoundResponse<string>("User does not exist");
@@ -111,7 +111,7 @@ export class UserService {
         return badRequestResponse<string>("Invalid birthdate");
       }
 
-      const updatedUser = await this.userRepositoryPort.updateUser(
+      const updatedUser = await this.userRepositoryPort.Update(
         userId,
         inputData
       );

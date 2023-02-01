@@ -1,10 +1,6 @@
-import { IUser, IUserAdd, IUserUpdate } from "../user/user.type";
+import { IUser, IUserAdd } from "../user/user.type";
+import { IBaseRepositoryPort } from ".";
 
-export interface IUserRepositoryPort {
-  findAllUsers: () => Promise<IUser[]>;
-  findUserByEmail: (email: string) => Promise<IUser | undefined>;
-  findUserById: (userId: string) => Promise<IUser | undefined>;
-  createUser: (inputData: IUserAdd) => Promise<IUser>;
-  updateUser: (id: string, inputData: IUserUpdate) => Promise<IUser>;
-  deleteUser: (id: string) => Promise<IUser>;
+export interface IUserRepositoryPort extends IBaseRepositoryPort<IUser, IUserAdd> {
+  FindByEmail: (email: string) => Promise<IUser | undefined>;
 }

@@ -34,12 +34,12 @@ const makeSut = () => {
 };
 
 describe("Unit tests for UpdateUser service", () => {
-  it("Should call findUserById function with correct values", async () => {
+  it("Should call FindById function with correct values", async () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     const findUserByIdSpy = jest.spyOn(
       userRepositoryImplementationStub,
-      "findUserById"
+      "FindById"
     );
 
     await sut.UpdateUser(fakeUserId, fakeInput);
@@ -47,12 +47,12 @@ describe("Unit tests for UpdateUser service", () => {
     expect(findUserByIdSpy).toBeCalledWith(fakeUserId);
   });
 
-  it("Should call findUserById function 1 time", async () => {
+  it("Should call FindById function 1 time", async () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     const findUserByIdSpy = jest.spyOn(
       userRepositoryImplementationStub,
-      "findUserById"
+      "FindById"
     );
 
     await sut.UpdateUser(fakeUserId, fakeInput);
@@ -64,7 +64,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(undefined);
 
     const sutReturn = await sut.UpdateUser(fakeUserId, fakeInput);
@@ -76,7 +76,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(undefined);
 
     const sutReturn = await sut.UpdateUser(fakeUserId, fakeInput);
@@ -88,7 +88,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const sutReturn = await sut.UpdateUser(fakeUserId, fakeInput);
@@ -100,7 +100,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const sutReturn = await sut.UpdateUser(fakeUserId, fakeInput);
@@ -112,7 +112,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeInvalidEmail = "invalid_email";
@@ -129,7 +129,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeValidEmail = "another_valid_email@email.com";
@@ -146,7 +146,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeInvalidEmail = "invalid_email";
@@ -163,7 +163,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeValidEmail = "another_valid_email@email.com";
@@ -180,7 +180,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeInvalidBirthdate = new Date();
@@ -198,7 +198,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeValidBirthdate = new Date();
@@ -216,7 +216,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeInvalidBirthdate = new Date();
@@ -234,7 +234,7 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const fakeValidBirthdate = new Date();
@@ -252,11 +252,11 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     jest
-      .spyOn(userRepositoryImplementationStub, "updateUser")
+      .spyOn(userRepositoryImplementationStub, "Update")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const sutReturn = await sut.UpdateUser(fakeUserId, fakeInput);
@@ -277,12 +277,12 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const updateUserRepositorySpy = jest.spyOn(
       userRepositoryImplementationStub,
-      "updateUser"
+      "Update"
     );
 
     await sut.UpdateUser(fakeUserId, fakeInput);
@@ -294,12 +294,12 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     const updateUserRepositorySpy = jest.spyOn(
       userRepositoryImplementationStub,
-      "updateUser"
+      "Update"
     );
 
     await sut.UpdateUser(fakeUserId, fakeInput);
@@ -311,11 +311,11 @@ describe("Unit tests for UpdateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "findUserById")
+      .spyOn(userRepositoryImplementationStub, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
     jest
-      .spyOn(userRepositoryImplementationStub, "updateUser")
+      .spyOn(userRepositoryImplementationStub, "Update")
       .mockRejectedValueOnce(new Error(""));
 
     const sutReturn = sut.UpdateUser(fakeUserId, fakeInput);

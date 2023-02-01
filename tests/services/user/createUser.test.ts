@@ -234,7 +234,7 @@ describe("Unit tests for CreateUser service", () => {
     const { sut, userRepositoryImplementationStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "createUser")
+      .spyOn(userRepositoryImplementationStub, "Create")
       .mockRejectedValueOnce(new Error(""));
 
     const sutReturn = sut.CreateUser(fakeInput);

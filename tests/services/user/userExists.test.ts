@@ -28,7 +28,7 @@ describe("Unit tests for UserExists method", () => {
     const { sut, userRepositoryStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryStub, "findUserByEmail")
+      .spyOn(userRepositoryStub, "FindByEmail")
       .mockResolvedValueOnce(fakeUser);
 
     const userAlreadyExistsReturn = await sut.UserExists(
@@ -42,7 +42,7 @@ describe("Unit tests for UserExists method", () => {
     const { sut, userRepositoryStub } = makeSut();
 
     jest
-      .spyOn(userRepositoryStub, "findUserByEmail")
+      .spyOn(userRepositoryStub, "FindByEmail")
       .mockResolvedValueOnce(undefined);
 
     const userAlreadyExistsReturn = await sut.UserExists(
