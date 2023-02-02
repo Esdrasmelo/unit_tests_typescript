@@ -5,7 +5,7 @@ import {
   okResponse,
 } from "../protocols/http.protocols";
 import {
-  HttpResponse,
+  IHttpResponse,
   IUser,
   IUserAdd,
   IUserRepositoryPort,
@@ -44,7 +44,7 @@ export class UserService {
 
   public async CreateUser(
     inputData: IUserAdd
-  ): Promise<HttpResponse<IUser | string>> {
+  ): Promise<IHttpResponse<IUser | string>> {
     try {
       const userAlreadyExists = await this.UserExists(inputData.email);
 
@@ -72,7 +72,7 @@ export class UserService {
     }
   }
 
-  public async GetAllUsers(): Promise<HttpResponse<IUser[] | string>> {
+  public async GetAllUsers(): Promise<IHttpResponse<IUser[] | string>> {
     try {
       const getUsers = await this.userRepositoryPort.FindAll();
 
@@ -89,7 +89,7 @@ export class UserService {
   public async UpdateUser(
     userId: string,
     inputData: IUserUpdate
-  ): Promise<HttpResponse<IUser | string>> {
+  ): Promise<IHttpResponse<IUser | string>> {
     try {
       const userExists = await this.userRepositoryPort.FindById(userId);
 

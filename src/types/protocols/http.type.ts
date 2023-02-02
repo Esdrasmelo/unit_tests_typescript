@@ -1,4 +1,4 @@
-export interface HttpResponse<BodyType> {
+export interface IHttpResponse<BodyType> {
   body: BodyType;
   status: number;
 }
