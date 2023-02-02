@@ -3,7 +3,7 @@ import { IBankAccount, IBankAccountAdd } from "../../../src/types/bankAccount";
 import { IBankAccountRepositoryPort } from "../../../src/types/repository";
 
 export class TestBankAccountRepository implements IBankAccountRepositoryPort {
-  private bankAccountDatabase: IBankAccount[];
+  private bankAccountDatabase: IBankAccount[] = [];
 
   async FindAll(): Promise<IBankAccount[]> {
     try {
