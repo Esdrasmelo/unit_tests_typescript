@@ -10,7 +10,7 @@ export interface IBankAccount {
 export interface IBankAccountAdd {
   accountNumber: string;
   owner_id: string;
-  balance: number;
+  amountToBeDeposited: number;
 }
 
 export interface IBankAccounUpdate extends Partial<IBankAccountAdd> {}
