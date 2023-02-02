@@ -25,6 +25,18 @@ export class TestBankAccountRepository implements IBankAccountRepositoryPort {
     }
   }
 
+  async FindByAccountNumber(accountNumber: string): Promise<IBankAccount> {
+    try {
+      const bankAccount = this.bankAccountDatabase.find(
+        (account) => account.accountNumber === accountNumber
+      )!;
+
+      return bankAccount;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async Create(inputData: IBankAccountAdd): Promise<IBankAccount> {
     try {
       const generatedId = randomUUID();
@@ -32,6 +44,7 @@ export class TestBankAccountRepository implements IBankAccountRepositoryPort {
       this.bankAccountDatabase.push({
         ...inputData,
         id: generatedId,
+        balance: inputData.amountToBeDeposited,
         created_at: new Date(),
         updated_at: new Date(),
       });
