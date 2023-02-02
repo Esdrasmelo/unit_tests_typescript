@@ -1,9 +1,9 @@
-import { UserRepositoryImplementation } from "../../../src/repository";
+import { TestUserRepository } from "./repository/testUserRepository.repository";
 import { UserService } from "../../../src/services";
 
 const makeSut = () => {
-  const userRepositoryStub = new UserRepositoryImplementation();
-  const sut = new UserService(userRepositoryStub);
+  const testUserRepository = new TestUserRepository();
+  const sut = new UserService(testUserRepository);
 
   return {
     sut,

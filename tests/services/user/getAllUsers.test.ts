@@ -1,4 +1,4 @@
-import { UserRepositoryImplementation } from "../../../src/repository";
+import { TestUserRepository } from "./repository/testUserRepository.repository";
 import { UserService } from "../../../src/services";
 import { IUser } from "../../../src/types";
 
@@ -26,21 +26,21 @@ const fakeOutput: IUser[] = [
 ];
 
 const makeSut = () => {
-  const userRepositoryImplementationStub = new UserRepositoryImplementation();
-  const sut = new UserService(userRepositoryImplementationStub);
+  const testUserRepository = new TestUserRepository();
+  const sut = new UserService(testUserRepository);
 
   return {
     sut,
-    userRepositoryImplementationStub,
+    testUserRepository,
   };
 };
 
 describe("Unit tests for GetAllUsers service", () => {
   it("Should call findAllUsers 1 time", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     const findAllUsersSpy = jest.spyOn(
-      userRepositoryImplementationStub,
+      testUserRepository,
       "FindAll"
     );
 
@@ -50,10 +50,10 @@ describe("Unit tests for GetAllUsers service", () => {
   });
 
   it("Should not call user findAllUsers function with any arguments", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     const findAllUsersSpy = jest.spyOn(
-      userRepositoryImplementationStub,
+      testUserRepository,
       "FindAll"
     );
 
@@ -63,10 +63,10 @@ describe("Unit tests for GetAllUsers service", () => {
   });
 
   it("Should return an error message if no users were found", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "FindAll")
+      .spyOn(testUserRepository, "FindAll")
       .mockResolvedValueOnce([]);
 
     const sutReturn = await sut.GetAllUsers();
@@ -75,10 +75,10 @@ describe("Unit tests for GetAllUsers service", () => {
   });
 
   it("Should return status 404 if no users were found", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "FindAll")
+      .spyOn(testUserRepository, "FindAll")
       .mockResolvedValueOnce([]);
 
     const sutReturn = await sut.GetAllUsers();
@@ -87,10 +87,10 @@ describe("Unit tests for GetAllUsers service", () => {
   });
 
   it("Should return data with correct structure", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "FindAll")
+      .spyOn(testUserRepository, "FindAll")
       .mockResolvedValueOnce(fakeOutput);
 
     const sutReturn = await sut.GetAllUsers();
@@ -118,10 +118,10 @@ describe("Unit tests for GetAllUsers service", () => {
   });
 
   it("Should return status 200 if users are found", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "FindAll")
+      .spyOn(testUserRepository, "FindAll")
       .mockResolvedValueOnce(fakeOutput);
 
     const sutReturn = await sut.GetAllUsers();
@@ -129,11 +129,11 @@ describe("Unit tests for GetAllUsers service", () => {
     expect(sutReturn.status).toBe(200);
   });
 
-  it("Should throw error if userRepositoryImplementationStub throws", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+  it("Should throw error if testUserRepository throws", async () => {
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "FindAll")
+      .spyOn(testUserRepository, "FindAll")
       .mockRejectedValueOnce(new Error(""));
 
     const sutReturn = sut.GetAllUsers();

@@ -1,4 +1,4 @@
-import { UserRepositoryImplementation } from "../../../src/repository";
+import { TestUserRepository } from "./repository/testUserRepository.repository";
 import { UserService } from "../../../src/services";
 import { IUser } from "../../../src/types";
 
@@ -14,21 +14,21 @@ const fakeUser: IUser = {
 };
 
 const makeSut = () => {
-  const userRepositoryStub = new UserRepositoryImplementation();
-  const sut = new UserService(userRepositoryStub);
+  const testUserRepository = new TestUserRepository();
+  const sut = new UserService(testUserRepository);
 
   return {
     sut,
-    userRepositoryStub,
+    testUserRepository,
   };
 };
 
 describe("Unit tests for UserExists method", () => {
   it("Should return true if user already exists", async () => {
-    const { sut, userRepositoryStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryStub, "FindByEmail")
+      .spyOn(testUserRepository, "FindByEmail")
       .mockResolvedValueOnce(fakeUser);
 
     const userAlreadyExistsReturn = await sut.UserExists(
@@ -39,10 +39,10 @@ describe("Unit tests for UserExists method", () => {
   });
 
   it("Should return false if user does not exist", async () => {
-    const { sut, userRepositoryStub } = makeSut();
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryStub, "FindByEmail")
+      .spyOn(testUserRepository, "FindByEmail")
       .mockResolvedValueOnce(undefined);
 
     const userAlreadyExistsReturn = await sut.UserExists(

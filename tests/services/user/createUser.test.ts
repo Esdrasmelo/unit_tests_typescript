@@ -1,5 +1,5 @@
 import { UserService } from "../../../src/services";
-import { UserRepositoryImplementation } from "../../../src/repository";
+import { TestUserRepository } from "./repository/testUserRepository.repository";
 import { IUser, IUserAdd } from "../../../src/types/user/user.type";
 
 const fakeInput: IUserAdd = {
@@ -11,11 +11,11 @@ const fakeInput: IUserAdd = {
 };
 
 const makeSut = () => {
-  const userRepositoryImplementationStub = new UserRepositoryImplementation();
-  const sut = new UserService(userRepositoryImplementationStub);
+  const testUserRepository = new TestUserRepository();
+  const sut = new UserService(testUserRepository);
 
   return {
-    userRepositoryImplementationStub,
+    testUserRepository,
     sut,
   };
 };
@@ -230,11 +230,11 @@ describe("Unit tests for CreateUser service", () => {
     expect(sutReturn.status).toBe(201);
   });
 
-  it("Should throw error if userRepositoryImplementationStub throws", async () => {
-    const { sut, userRepositoryImplementationStub } = makeSut();
+  it("Should throw error if testUserRepository throws", async () => {
+    const { sut, testUserRepository } = makeSut();
 
     jest
-      .spyOn(userRepositoryImplementationStub, "Create")
+      .spyOn(testUserRepository, "Create")
       .mockRejectedValueOnce(new Error(""));
 
     const sutReturn = sut.CreateUser(fakeInput);
