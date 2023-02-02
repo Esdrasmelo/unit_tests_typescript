@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
-import { IUser, IUserAdd, IUserRepositoryPort, IUserUpdate } from "../../types";
+import { IUser, IUserAdd, IUserRepositoryPort, IUserUpdate } from "../../../../src/types";
 
-export class UserRepositoryImplementation implements IUserRepositoryPort {
+export class TestUserRepository implements IUserRepositoryPort {
   private userDatabase: IUser[] = [];
 
   async FindAll(): Promise<IUser[]> {
