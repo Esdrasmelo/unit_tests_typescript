@@ -1,10 +1,5 @@
 import { randomUUID } from "crypto";
-import {
-  IUser,
-  IUserAdd,
-  IUserRepositoryPort,
-  IUserUpdate,
-} from "../../../src/types";
+import { IUser, IUserAdd, IUserRepositoryPort, IUserUpdate } from "../../../src/types";
 
 export class TestUserRepository implements IUserRepositoryPort {
   private userDatabase: IUser[] = [];
@@ -39,9 +34,11 @@ export class TestUserRepository implements IUserRepositoryPort {
 
   async Create(inputData: IUserAdd): Promise<IUser> {
     try {
+      const generatedId = randomUUID();
+
       this.userDatabase.push({
         ...inputData,
-        id: randomUUID(),
+        id: generatedId,
         created_at: new Date(),
         updated_at: new Date(),
       });
