@@ -51,10 +51,10 @@ export class TestUserRepository implements IUserRepositoryPort {
     }
   }
 
-  async Update(userId: string, inputData: IUserUpdate): Promise<IUser> {
+  async Update(id: string, inputData: IUserUpdate): Promise<IUser> {
     try {
       const userIndex = this.userDatabase.indexOf(
-        this.userDatabase.find((user) => user.id === userId)!
+        this.userDatabase.find((user) => user.id === id)!
       );
 
       this.userDatabase[userIndex] = {
