@@ -1,4 +1,4 @@
-import { TestUserRepository } from "./repository/testUserRepository.repository";
+import { TestUserRepository } from "../../repository/user";
 import { UserService } from "../../../src/services";
 import { IUser } from "../../../src/types";
 
@@ -39,10 +39,7 @@ describe("Unit tests for GetAllUsers service", () => {
   it("Should call findAllUsers 1 time", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    const findAllUsersSpy = jest.spyOn(
-      testUserRepository,
-      "FindAll"
-    );
+    const findAllUsersSpy = jest.spyOn(testUserRepository, "FindAll");
 
     await sut.GetAllUsers();
 
@@ -52,10 +49,7 @@ describe("Unit tests for GetAllUsers service", () => {
   it("Should not call user findAllUsers function with any arguments", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    const findAllUsersSpy = jest.spyOn(
-      testUserRepository,
-      "FindAll"
-    );
+    const findAllUsersSpy = jest.spyOn(testUserRepository, "FindAll");
 
     await sut.GetAllUsers();
 
@@ -65,9 +59,7 @@ describe("Unit tests for GetAllUsers service", () => {
   it("Should return an error message if no users were found", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    jest
-      .spyOn(testUserRepository, "FindAll")
-      .mockResolvedValueOnce([]);
+    jest.spyOn(testUserRepository, "FindAll").mockResolvedValueOnce([]);
 
     const sutReturn = await sut.GetAllUsers();
 
@@ -77,9 +69,7 @@ describe("Unit tests for GetAllUsers service", () => {
   it("Should return status 404 if no users were found", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    jest
-      .spyOn(testUserRepository, "FindAll")
-      .mockResolvedValueOnce([]);
+    jest.spyOn(testUserRepository, "FindAll").mockResolvedValueOnce([]);
 
     const sutReturn = await sut.GetAllUsers();
 
@@ -89,9 +79,7 @@ describe("Unit tests for GetAllUsers service", () => {
   it("Should return data with correct structure", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    jest
-      .spyOn(testUserRepository, "FindAll")
-      .mockResolvedValueOnce(fakeOutput);
+    jest.spyOn(testUserRepository, "FindAll").mockResolvedValueOnce(fakeOutput);
 
     const sutReturn = await sut.GetAllUsers();
 
@@ -120,9 +108,7 @@ describe("Unit tests for GetAllUsers service", () => {
   it("Should return status 200 if users are found", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    jest
-      .spyOn(testUserRepository, "FindAll")
-      .mockResolvedValueOnce(fakeOutput);
+    jest.spyOn(testUserRepository, "FindAll").mockResolvedValueOnce(fakeOutput);
 
     const sutReturn = await sut.GetAllUsers();
 

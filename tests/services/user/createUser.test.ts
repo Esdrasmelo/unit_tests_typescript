@@ -1,5 +1,5 @@
 import { UserService } from "../../../src/services";
-import { TestUserRepository } from "./repository/testUserRepository.repository";
+import { TestUserRepository } from "../../repository/user";
 import { IUser, IUserAdd } from "../../../src/types/user/user.type";
 
 const fakeInput: IUserAdd = {

@@ -1,4 +1,4 @@
-import { TestUserRepository } from "./repository/testUserRepository.repository";
+import { TestUserRepository } from "../../repository/user";
 import { UserService } from "../../../src/services";
 
 const makeSut = () => {

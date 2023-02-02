@@ -1,4 +1,4 @@
-import { TestUserRepository } from "./repository/testUserRepository.repository";
+import { TestUserRepository } from "../../repository/user";
 import { UserService } from "../../../src/services/user.service";
 import { IUser, IUserUpdate } from "../../../src/types";
 
@@ -37,10 +37,7 @@ describe("Unit tests for UpdateUser service", () => {
   it("Should call FindById function with correct values", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    const findUserByIdSpy = jest.spyOn(
-      testUserRepository,
-      "FindById"
-    );
+    const findUserByIdSpy = jest.spyOn(testUserRepository, "FindById");
 
     await sut.UpdateUser(fakeUserId, fakeInput);
 
@@ -50,10 +47,7 @@ describe("Unit tests for UpdateUser service", () => {
   it("Should call FindById function 1 time", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    const findUserByIdSpy = jest.spyOn(
-      testUserRepository,
-      "FindById"
-    );
+    const findUserByIdSpy = jest.spyOn(testUserRepository, "FindById");
 
     await sut.UpdateUser(fakeUserId, fakeInput);
 
@@ -63,9 +57,7 @@ describe("Unit tests for UpdateUser service", () => {
   it("Should return an error message if user doest not exist", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    jest
-      .spyOn(testUserRepository, "FindById")
-      .mockResolvedValueOnce(undefined);
+    jest.spyOn(testUserRepository, "FindById").mockResolvedValueOnce(undefined);
 
     const sutReturn = await sut.UpdateUser(fakeUserId, fakeInput);
 
@@ -75,9 +67,7 @@ describe("Unit tests for UpdateUser service", () => {
   it("Should return status 404 if user doest not exist", async () => {
     const { sut, testUserRepository } = makeSut();
 
-    jest
-      .spyOn(testUserRepository, "FindById")
-      .mockResolvedValueOnce(undefined);
+    jest.spyOn(testUserRepository, "FindById").mockResolvedValueOnce(undefined);
 
     const sutReturn = await sut.UpdateUser(fakeUserId, fakeInput);
 
@@ -280,10 +270,7 @@ describe("Unit tests for UpdateUser service", () => {
       .spyOn(testUserRepository, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
-    const updateUserRepositorySpy = jest.spyOn(
-      testUserRepository,
-      "Update"
-    );
+    const updateUserRepositorySpy = jest.spyOn(testUserRepository, "Update");
 
     await sut.UpdateUser(fakeUserId, fakeInput);
 
@@ -297,10 +284,7 @@ describe("Unit tests for UpdateUser service", () => {
       .spyOn(testUserRepository, "FindById")
       .mockResolvedValueOnce(fakeUniqueUserOutput);
 
-    const updateUserRepositorySpy = jest.spyOn(
-      testUserRepository,
-      "Update"
-    );
+    const updateUserRepositorySpy = jest.spyOn(testUserRepository, "Update");
 
     await sut.UpdateUser(fakeUserId, fakeInput);
 
