@@ -26,7 +26,7 @@ describe("Unit tests for CreateUser service", () => {
 
     jest.spyOn(sut, "IsBirthdateValid").mockReturnValueOnce(true);
 
-    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(false);
+    jest.spyOn(sut, "UserExistsByEmail").mockResolvedValueOnce(false);
 
     jest.spyOn(sut, "IsEmailValid").mockReturnValueOnce(true);
 
@@ -34,7 +34,7 @@ describe("Unit tests for CreateUser service", () => {
 
     expect(sut.IsBirthdateValid).toHaveBeenCalledWith(fakeInput.birthdate);
     expect(sut.IsEmailValid).toHaveBeenCalledWith(fakeInput.email);
-    expect(sut.UserExists).toHaveBeenCalledWith(fakeInput.email);
+    expect(sut.UserExistsByEmail).toHaveBeenCalledWith(fakeInput.email);
   });
 
   it("Should return an error message if birthdate is not valid", async () => {
@@ -168,7 +168,7 @@ describe("Unit tests for CreateUser service", () => {
   it("Should return an error message if user already exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(true);
+    jest.spyOn(sut, "UserExistsByEmail").mockResolvedValueOnce(true);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
@@ -178,7 +178,7 @@ describe("Unit tests for CreateUser service", () => {
   it("Should return status 400 if user already exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(true);
+    jest.spyOn(sut, "UserExistsByEmail").mockResolvedValueOnce(true);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
@@ -188,7 +188,7 @@ describe("Unit tests for CreateUser service", () => {
   it("Should not return an error message if user does not exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(false);
+    jest.spyOn(sut, "UserExistsByEmail").mockResolvedValueOnce(false);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
@@ -198,7 +198,7 @@ describe("Unit tests for CreateUser service", () => {
   it("Should not return status 400 if user does not exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "UserExists").mockResolvedValueOnce(false);
+    jest.spyOn(sut, "UserExistsByEmail").mockResolvedValueOnce(false);
 
     const sutReturn = await sut.CreateUser(fakeInput);
 
