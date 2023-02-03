@@ -31,7 +31,7 @@ describe("Unit tests for UserExists method", () => {
       .spyOn(testUserRepository, "FindByEmail")
       .mockResolvedValueOnce(fakeUser);
 
-    const userAlreadyExistsReturn = await sut.UserExists(
+    const userAlreadyExistsReturn = await sut.UserExistsByEmail(
       "valid_email@email.com"
     );
 
@@ -45,7 +45,7 @@ describe("Unit tests for UserExists method", () => {
       .spyOn(testUserRepository, "FindByEmail")
       .mockResolvedValueOnce(undefined);
 
-    const userAlreadyExistsReturn = await sut.UserExists(
+    const userAlreadyExistsReturn = await sut.UserExistsByEmail(
       "another_valid_email@email.com"
     );
 
