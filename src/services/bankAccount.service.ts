@@ -24,7 +24,7 @@ export class BankAccountService {
     this.userService = userService;
   }
 
-  async BankAccountExists(accountNumber: string): Promise<boolean> {
+  async BankAccountExistsByAccountNumber(accountNumber: string): Promise<boolean> {
     try {
       const bankAccount =
         await this.bankAccountRepositoryPort.FindByAccountNumber(accountNumber);
@@ -41,7 +41,7 @@ export class BankAccountService {
     inputData: IBankAccountAdd
   ): Promise<IHttpResponse<IBankAccount | string>> {
     try {
-      const bankAccountAlreadyExists = await this.BankAccountExists(
+      const bankAccountAlreadyExists = await this.BankAccountExistsByAccountNumber(
         inputData.accountNumber
       );
       const ownerExists = await this.userService.UserExistsById(
