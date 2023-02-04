@@ -20,17 +20,6 @@ const fakeOutput: IBankAccount = {
   updated_at: new Date(),
 };
 
-const fakeUserOutput: IUser = {
-  id: "valid_id",
-  name: "valid_name",
-  email: "valid_email@email.com",
-  birthdate: new Date("2004-01-21"),
-  job_position: "valid_job_position",
-  phone: "valid_phone",
-  created_at: new Date(),
-  updated_at: new Date(),
-};
-
 const makeSut = () => {
   const testUserRepository = new TestUserRepository();
   const userService = new UserService(testUserRepository);
