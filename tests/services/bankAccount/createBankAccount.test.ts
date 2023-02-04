@@ -48,7 +48,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should return an error if a bank account for a specific account number already exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(true);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(true);
 
     const sutReturn = await sut.CreateBankAccount(fakeInput);
 
@@ -60,7 +62,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should not return an error if a bank account for a specific account number does not exist", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     const sutReturn = await sut.CreateBankAccount(fakeInput);
 
@@ -72,7 +76,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should return status 400 if a bank account for a specific account number already exists", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(true);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(true);
 
     const sutReturn = await sut.CreateBankAccount(fakeInput);
 
@@ -82,7 +88,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should not return status 400 if a bank account for a specific account number does not exist", async () => {
     const { sut, userService } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
 
@@ -134,7 +142,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should return an error if bank account is trying to be created without any deposit", async () => {
     const { sut, userService } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
 
@@ -151,7 +161,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should not return an error if bank account is not trying to be created without any deposit", async () => {
     const { sut } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     const sutReturn = await sut.CreateBankAccount(fakeInput);
 
@@ -163,7 +175,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should return status 400 if bank account is trying to be created without any deposit", async () => {
     const { sut, userService } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
 
@@ -178,7 +192,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should not return status 400 if bank account is not trying to be created without any deposit", async () => {
     const { sut, userService } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
 
@@ -190,7 +206,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should call Create from testBankAccountRepository with correct values", async () => {
     const { sut, testBankAccountRepository, userService } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
 
@@ -204,7 +222,9 @@ describe("Unit tests for CreateBankAccount service", () => {
   it("Should successfully create bank account", async () => {
     const { sut, testBankAccountRepository, userService } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
 
@@ -224,10 +244,26 @@ describe("Unit tests for CreateBankAccount service", () => {
     });
   });
 
+  it("Should throw if BankAccountExistsByAccountNumber throws", async () => {
+    const { sut, userService } = makeSut();
+
+    jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
+
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockRejectedValueOnce(new Error());
+
+    const sutReturn = sut.CreateBankAccount(fakeInput);
+
+    await expect(sutReturn).rejects.toThrowError();
+  });
+
   it("Should throw if Create method from testBankAccountRepository throws", async () => {
     const { sut, userService, testBankAccountRepository } = makeSut();
 
-    jest.spyOn(sut, "BankAccountExists").mockResolvedValueOnce(false);
+    jest
+      .spyOn(sut, "BankAccountExistsByAccountNumber")
+      .mockResolvedValueOnce(false);
 
     jest.spyOn(userService, "UserExistsById").mockResolvedValueOnce(true);
 
