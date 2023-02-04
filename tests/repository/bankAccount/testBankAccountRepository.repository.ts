@@ -25,11 +25,11 @@ export class TestBankAccountRepository implements IBankAccountRepositoryPort {
     }
   }
 
-  async FindByAccountNumber(accountNumber: string): Promise<IBankAccount> {
+  async FindByAccountNumber(accountNumber: string): Promise<IBankAccount | undefined> {
     try {
       const bankAccount = this.bankAccountDatabase.find(
         (account) => account.accountNumber === accountNumber
-      )!;
+      );
 
       return bankAccount;
     } catch (error) {
